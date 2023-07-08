@@ -68,26 +68,49 @@ const courseSchema = new mongoose.Schema({
 
 const Course = mongoose.model("Course", courseSchema);
 
-async function specificCourses() {
-  return await Course.find({
-    isPublished: true,
-    tags: { $in: ["frontend", "backend"] },
-  })
-    .sort({ price: -1 })
-    .select({ name: 1, author: 1, price: 1 });
-}
+// async function specificCourses() {
+//   return await Course.find({
+//     isPublished: true,
+//     tags: { $in: ["frontend", "backend"] },
+//   })
+//     .sort({ price: -1 })
+//     .select({ name: 1, author: 1, price: 1 });
+// }
 
-async function run() {
-  const courses = await specificCourses();
-  console.log(courses);
-}
+// async function run() {
+//   const courses = await specificCourses();
+//   console.log(courses);
+// }
 
-run();
+//run();
+
 // async function getCourses() {
-//   const courses = await Course.find({ isPublished: true, tags: "backend" })
-//     .sort({ name: 1 })
-//     .select({ name: 1, author: 1 });
+//   const courses = await Course.find();
 //   console.log(courses);
 // }
 
 // getCourses();
+
+// UPDATE course
+// query first approach
+// findById()
+// modify its properties
+// save
+async function updateCourse() {
+  const course = await Course.find({ _id: "5a68fde3f09ad7646ddec17e" });
+  if (!course) {
+    console.log("not available");
+    return;
+  }
+  course.isPublished = true;
+  course.author = "Another Author";
+  const result = await course.save();
+  console.log(result);
+}
+updateCourse();
+
+//update first approach
+// update directly
+// optionally:get the updated document
+
+// updateCourse("5a68fde3f09ad7646ddec17e");
