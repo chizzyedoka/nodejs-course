@@ -16,16 +16,24 @@ const courseSchema = new mongoose.Schema({
   category: {
     type: String,
     required: true,
-    enum: ["web", "mobile", "network"], // validation
+    enum: ["web", "mobile", "network"], // validation; category should be one of these values
   },
   author: String,
-  tags: [String],
+  tags: {
+    type: Array,
+    validate: {
+      validator: function (v) {
+        return v && v.length > 0;
+      },
+      message: "A course should have at least one tag",
+    },
+  }, // a tag can have an empty array if we don't validate it
   date: { type: Date, default: Date.now },
   isPublished: Boolean,
   price: {
     type: Number,
     required: function () {
-      return this.isPublished;
+      return this.isPublished; // price is required if the course is published
     },
     min: 10,
     max: 200,
@@ -49,8 +57,11 @@ async function createCourse() {
   try {
     const result = await course.save();
     console.log(result);
+    // or
+    // await course.validate()
   } catch (ex) {
-    console.log(ex.message);
+    // incase the promise is rejected
+    console.log(ex.message); // exception message
   }
 }
 
