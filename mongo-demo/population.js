@@ -1,3 +1,4 @@
+// Referencing Documents (Normalization)
 const mongoose = require("mongoose");
 
 mongoose
@@ -52,12 +53,14 @@ async function createCourse(name, author) {
 }
 
 async function listCourses() {
-  const courses = await Course.find().select("name");
+  const courses = await Course.find()
+    .populate("author", ["name", "bio"])
+    .select("name author");
   console.log(courses);
 }
 
 //createAuthor("Mosh", "My bio", "My Website");
 
-createCourse("Node Course", "64afd38f442cc42eb0e1385a");
+//createCourse("Node Course", "64afd38f442cc42eb0e1385a");
 
-// listCourses();
+listCourses();

@@ -59,7 +59,7 @@ async function createCourse() {
   // creating an object based on the class
   const course = new Course({
     name: "my Course",
-    category: "-",
+    category: "web",
     author: "chizzy",
     tags: ["angular", "frontend"],
     isPublished: true,
